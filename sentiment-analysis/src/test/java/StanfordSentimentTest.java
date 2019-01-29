@@ -1,14 +1,14 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.alfresco.ml.sentimentanalysis.SentimentAnalyzer;
 import org.alfresco.ml.sentimentanalysis.stanford.StanfordAnalyzer;
-
-import junitparams.FileParameters;
-import junitparams.JUnitParamsRunner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import junitparams.FileParameters;
+import junitparams.JUnitParamsRunner;
 
 @RunWith(JUnitParamsRunner.class)
 public class StanfordSentimentTest {
@@ -28,11 +28,7 @@ public class StanfordSentimentTest {
 	public void test(int sentiment, String data) {
 		String result = a.analyze(data);
 		String expectedResult = outputs[sentiment];
-		if (!result.contains(expectedResult))
-		{
-			fail(result + " should be " + expectedResult);
-		}
-		System.out.println("Success");
+		assertTrue(result.contains(expectedResult));
 	}
 
 }

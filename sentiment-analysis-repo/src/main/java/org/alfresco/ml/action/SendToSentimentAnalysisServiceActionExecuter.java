@@ -10,13 +10,16 @@ import org.alfresco.ml.model.MLSAContentModel;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.executer.ActionExecuterAbstractBase;
 import org.alfresco.repo.content.MimetypeMap;
+import org.alfresco.repo.content.transform.ContentTransformer;
 import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.repository.ContentReader;
 import org.alfresco.service.cmr.repository.ContentService;
+import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
+import org.alfresco.service.cmr.repository.TransformationOptions;
 import org.alfresco.service.namespace.QName;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -44,12 +47,20 @@ public class SendToSentimentAnalysisServiceActionExecuter extends ActionExecuter
 		ContentService contentService = serviceRegistry.getContentService();
 		ContentReader reader = contentService.getReader(nodeRef, ContentModel.PROP_CONTENT);
 		
-		String content = reader.getContentString();
+		String content = null;
+		ContentTransformer transformer = contentService.getTransformer(reader.getMimetype(), MimetypeMap.MIMETYPE_TEXT_PLAIN);
+		if (transformer != null) {
+			ContentWriter writer = contentService.getTempWriter();
+			writer.setMimetype(MimetypeMap.MIMETYPE_TEXT_PLAIN);
+			transformer.transform(reader, writer, new TransformationOptions());
+			reader = writer.getReader();
+			content = reader.getContentString().toLowerCase();
+		}
 		
         try {   
         	
 			HttpClient httpClient = new HttpClient();
-	        PostMethod sentimentAnalyzeMethod = new PostMethod(sentimentAnalysisAPIUrl + "/text");
+	        PostMethod sentimentAnalyzeMethod = new PostMethod(sentimentAnalysisAPIUrl);
 	        sentimentAnalyzeMethod.setRequestEntity(new StringRequestEntity(content, MimetypeMap.MIMETYPE_TEXT_PLAIN, "UTF-8"));
 	        int status = httpClient.executeMethod(sentimentAnalyzeMethod);
 	        

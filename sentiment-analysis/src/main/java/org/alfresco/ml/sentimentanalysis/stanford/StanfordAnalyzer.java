@@ -3,6 +3,7 @@ package org.alfresco.ml.sentimentanalysis.stanford;
 import java.util.Properties;
 
 import org.alfresco.ml.sentimentanalysis.SentimentAnalyzer;
+import org.alfresco.ml.sentimentanalysis.SentimentAnalyzer.ANALYSYS_OUTCOME;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -10,7 +11,7 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
-public class StanfordAnalyzer implements SentimentAnalyzer
+public class StanfordAnalyzer extends SentimentAnalyzer
 {
 
     StanfordCoreNLP tokenizer;
@@ -28,7 +29,7 @@ public class StanfordAnalyzer implements SentimentAnalyzer
         pipeline = new StanfordCoreNLP(pipelineProps);
     }
 
-    public String analyze(String line)
+    public ANALYSYS_OUTCOME analyzeLine(String line)
     {
         Annotation annotation = tokenizer.process(line);
         pipeline.annotate(annotation);
@@ -38,6 +39,19 @@ public class StanfordAnalyzer implements SentimentAnalyzer
             output += sentence.get(SentimentCoreAnnotations.SentimentClass.class);
             output += "\n";
         }
-        return output;
+
+        System.out.println(output);
+
+        switch (output.trim())
+        {
+            case "Negative":
+                return ANALYSYS_OUTCOME.NEGATIVE;
+            case "Positive":
+                return ANALYSYS_OUTCOME.POSITIVE;
+            case "Unsure":
+            default:
+                return ANALYSYS_OUTCOME.NEUTRAL;
+
+        }
     }
 }

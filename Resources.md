@@ -33,3 +33,4 @@ http://www.cs.jhu.edu/~mdredze/datasets/sentiment/
 Building a classifier with OpenNLP
 ----------------------------------
 http://technobium.com/sentiment-analysis-using-opennlp-document-categorizer/
+https://milindjagre.co/2016/08/26/twitter-sentiment-analysis-using-opennlp-java-api/

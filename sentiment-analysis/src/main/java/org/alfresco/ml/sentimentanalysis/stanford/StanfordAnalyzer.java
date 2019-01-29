@@ -3,13 +3,11 @@ package org.alfresco.ml.sentimentanalysis.stanford;
 import java.util.Properties;
 
 import org.alfresco.ml.sentimentanalysis.SentimentAnalyzer;
-import org.alfresco.ml.sentimentanalysis.SentimentAnalyzer.ANALYSYS_OUTCOME;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
-import edu.stanford.nlp.util.CoreMap;
 
 public class StanfordAnalyzer implements SentimentAnalyzer
 {

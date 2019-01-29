@@ -1,7 +1,5 @@
 package org.alfresco.ml.sentimentanalysis.model;
 
-import org.alfresco.ml.sentimentanalysis.model.Ranking.ANALYSIS_OUTCOME;
-
 /**
  * Created by cleseach on 29/01/2019.
  */

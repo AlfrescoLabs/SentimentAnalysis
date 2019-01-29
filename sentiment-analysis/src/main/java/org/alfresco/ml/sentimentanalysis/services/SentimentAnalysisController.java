@@ -8,8 +8,10 @@ import org.alfresco.ml.sentimentanalysis.SentimentAnalyzer;
 import org.alfresco.ml.sentimentanalysis.model.Ranking;
 import org.alfresco.ml.sentimentanalysis.model.SentimentServiceResponse;
 import org.alfresco.ml.sentimentanalysis.stanford.StanfordAnalyzer;
+import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 
@@ -32,9 +34,10 @@ public class SentimentAnalysisController {
     }
 
     @PostMapping(value = "/binary", produces = "application/json")
-    public SentimentServiceResponse acceptData(InputStream dataStream) {
-        // TODO Call Service
-        Ranking ranking = new Ranking(3, 4, 3);
+    public SentimentServiceResponse acceptData(InputStream dataStream) throws IOException {
+        SentimentAnalyzer sa = new StanfordAnalyzer();
+    	String text = IOUtils.toString(dataStream, "UTF-8");
+        Ranking ranking = sa.analyzeBySentences(text);
         return new SentimentServiceResponse(ranking);
     }
 }

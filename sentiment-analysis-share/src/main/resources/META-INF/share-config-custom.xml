@@ -1,0 +1,32 @@
+<alfresco-config>
+    <config evaluator="string-compare" condition="DocumentLibrary">
+        <aspects>
+            <visible>
+                <aspect name="mlsa:sentimentAnalyzable"/>
+            </visible>
+            <addable>
+            </addable>
+            <removeable>
+            </removeable>
+        </aspects>
+    </config>
+
+    <config evaluator="aspect" condition="mlsa:sentimentAnalyzable">
+        <forms>
+            <form>
+                <field-visibility>
+                    <show id="mlsa:positiveCount" />
+                    <show id="mlsa:neutralCount" />
+                    <show id="mlsa:negativeCount" />
+                </field-visibility>
+                <appearance>
+                    <set id="rank" appearance="title" label="Sentimental Rank"/>
+                    <field id="mlsa:positiveCount" read-only="true" label="Positive" set="rank"/>
+                    <field id="mlsa:neutralCount" read-only="true" label="Neutral" set="rank"/>
+                    <field id="mlsa:negativeCount" read-only="true" label="Negative" set="rank"/>
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+</alfresco-config>

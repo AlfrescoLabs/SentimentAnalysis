@@ -31,11 +31,11 @@ params.put(TrainingParameters.ITERATIONS_PARAM, 30)
 DoccatFactory factory = new DoccatFactory()
 
 
-// Build the model
+// Build the model from our folder of test Amazon review data
 ObjectStream<DocumentSample> samples = new JHUSentimentReader(folder)
 DoccatModel model = DocumentCategorizerME.train("en", samples, params, factory)
 
 
-// Save
+// Save for later use
 output.withOutputStream { os -> model.serialize(os) }
 println "Model written to ${output}"

@@ -25,9 +25,16 @@ public class JHUSentimentReader implements ObjectStream<DocumentSample> {
    }
 
    public DocumentSample read() {
+      // Load and process a new file if we're out of data
       if (samples.size() == 0) {
          if (reviews.size() == 0) return null
 
+         // Loads reviews and turns into OpenNLP documents
+         // Stored with one line per review
+         //   token:count token:count token:count ... #label#:label
+         // Doesn't store raw reviews, stores partly processed tokens
+         // Token can be a single word, or compounds like "completely_corrupt"
+         // TODO Take advantage of these paired word tokens / relations
          File file = reviews.remove(reviews.size()-1)
          file.eachLine { line ->
             def tokens = []
@@ -40,6 +47,7 @@ public class JHUSentimentReader implements ObjectStream<DocumentSample> {
                   return
                }
 
+               // To keep weightings, repeat tokens by count
                int count = token.substring(split+1) as Integer
                text.split().each { t ->
                   count.each { tokens.add(t) }
@@ -49,6 +57,7 @@ public class JHUSentimentReader implements ObjectStream<DocumentSample> {
          }
       }
 
+      // Pop off the last review and return
       if (samples.size() > 0) {
          return samples.remove(samples.size()-1)
       } else {

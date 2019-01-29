@@ -17,7 +17,7 @@ public class StanfordSentimentTest
     @Test
     public void testPositive()
     {
-        assertEquals(ANALYSYS_OUTCOME.POSITIVE,a.analyzeLine("I love hackathons"));
+        assertEquals(ANALYSYS_OUTCOME.POSITIVE,a.analyzeLine("I really love hackathons"));
     }
     @Test
     public void testNegative()

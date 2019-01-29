@@ -3,7 +3,8 @@
 @Grab('org.apache.opennlp:opennlp-tools:1.9.1')
 import opennlp.tools.doccat.DoccatModel
 import opennlp.tools.doccat.DocumentCategorizerME
-import opennlp.tools.doccat.DocumentSampleStream
+import opennlp.tools.doccat.DocumentSample
+import opennlp.tools.doccat.DoccatFactory
 import opennlp.tools.util.ObjectStream
 import opennlp.tools.util.TrainingParameters
 
@@ -21,11 +22,12 @@ println "Building training data from ${folder}"
 TrainingParameters params = new TrainingParameters()
 params.put(TrainingParameters.CUTOFF_PARAM, 2)
 params.put(TrainingParameters.ITERATIONS_PARAM, 30)
+DoccatFactory factory = new DoccatFactory()
 
-// TODO
-/*
-DoccatModel model = DoccatModel.train("en",
- ObjectStream<DocumentSample> samples,
-                                TrainingParameters mlParams,
-                                DoccatFactory factory)
-*/
+
+// Build the model
+ObjectStream<DocumentSample> samples = new JHUSentimentReader(folder)
+println samples
+DoccatModel model = DocumentCategorizerME.train("en", samples, params, factory)
+
+// TODO Save

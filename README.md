@@ -23,11 +23,12 @@ Change into the sentiment-analysis folder and perform the following:
 ```mvn clean install```
 ### Running The Application ###
 ```java -jar target/sentiment-analysis-1.0.0.jar```
+To view the page: http://localhost:8080/
 ### Docker Build ###
 ```docker build -t SentimentAnalysis .```
 ### Running with Docker ###
 ```docker run SentimentAnalysis```
-
+To view the page: http://localhost:8080/
 ## REST API ##
 
 **Get Sentiment Analysis ranking by sentence**

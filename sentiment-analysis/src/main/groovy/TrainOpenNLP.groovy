@@ -20,7 +20,7 @@ if (! folder.exists()) {
 println "Building training data from ${folder}"
 
 // Where to save to
-File output = new File("sentiment.model")
+File output = new File("opennlp-sentiments.model")
 if (args.length > 1) output = new File(args[1])
 
 
@@ -31,11 +31,11 @@ params.put(TrainingParameters.ITERATIONS_PARAM, 30)
 DoccatFactory factory = new DoccatFactory()
 
 
-// Build the model
+// Build the model from our folder of test Amazon review data
 ObjectStream<DocumentSample> samples = new JHUSentimentReader(folder)
 DoccatModel model = DocumentCategorizerME.train("en", samples, params, factory)
 
 
-// Save
+// Save for later use
 output.withOutputStream { os -> model.serialize(os) }
 println "Model written to ${output}"

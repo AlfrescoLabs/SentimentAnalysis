@@ -2,11 +2,13 @@ package org.alfresco.ml.sentimentanalysis.opennlp;
 
 import org.alfresco.ml.sentimentanalysis.SentimentAnalyzer;
 
-public class OpenNLPAnalyzer implements SentimentAnalyzer {
+public class OpenNLPAnalyzer implements SentimentAnalyzer
+{
 
-	public String analyze(String line) {
+    public String analyze(String line)
+    {
 
-		return "";
-	}
+        return "";
+    }
 
 }

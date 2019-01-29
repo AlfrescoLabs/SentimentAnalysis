@@ -10,30 +10,34 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
-public class StanfordAnalyzer implements SentimentAnalyzer {
+public class StanfordAnalyzer implements SentimentAnalyzer
+{
 
-	StanfordCoreNLP tokenizer;
-	StanfordCoreNLP pipeline;
+    StanfordCoreNLP tokenizer;
+    StanfordCoreNLP pipeline;
 
-	public StanfordAnalyzer() {
-		Properties pipelineProps = new Properties();
-		Properties tokenizerProps = new Properties();
-		pipelineProps.setProperty("annotators", "parse, sentiment");
-		pipelineProps.setProperty("parse.binaryTrees", "true");
-		pipelineProps.setProperty("enforceRequirements", "false");
-		tokenizerProps.setProperty("annotators", "tokenize ssplit");
-		tokenizer = new StanfordCoreNLP(tokenizerProps);
-		pipeline = new StanfordCoreNLP(pipelineProps);
-	}
+    public StanfordAnalyzer()
+    {
+        Properties pipelineProps = new Properties();
+        Properties tokenizerProps = new Properties();
+        pipelineProps.setProperty("annotators", "parse, sentiment");
+        pipelineProps.setProperty("parse.binaryTrees", "true");
+        pipelineProps.setProperty("enforceRequirements", "false");
+        tokenizerProps.setProperty("annotators", "tokenize ssplit");
+        tokenizer = new StanfordCoreNLP(tokenizerProps);
+        pipeline = new StanfordCoreNLP(pipelineProps);
+    }
 
-	public String analyze(String line) {
-		Annotation annotation = tokenizer.process(line);
-		pipeline.annotate(annotation);
-		String output = "";
-		for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class)) {
-			output += sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-			output += "\n";
-		}
-		return output;
-	}
+    public String analyze(String line)
+    {
+        Annotation annotation = tokenizer.process(line);
+        pipeline.annotate(annotation);
+        String output = "";
+        for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
+        {
+            output += sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+            output += "\n";
+        }
+        return output;
+    }
 }

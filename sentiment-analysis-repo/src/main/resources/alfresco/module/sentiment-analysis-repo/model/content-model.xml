@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="mlsa:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+    <imports>
+        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+        <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+    </imports>
+
+    <namespaces>
+        <namespace uri="http://www.alfresco.com/model/machine/learning/sentiment/analysis/1.0" prefix="mlsa"/>
+    </namespaces>
+
+    <aspects>
+        <aspect name="mlsa:sentimentAnalyzable">
+            <title>Sentiment Analysis Rating</title>
+            <properties>
+                <property name="mlsa:positiveCount">
+                    <type>d:long</type>
+                </property>
+                <property name="mlsa:neutralCount">
+                    <type>d:long</type>
+                </property>
+                <property name="mlsa:negativeCount">
+                    <type>d:long</type>
+                </property>
+            </properties>
+        </aspect>
+    </aspects>
+
+</model>

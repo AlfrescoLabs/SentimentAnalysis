@@ -1,0 +1,25 @@
+<extension>
+    <modules>
+        <module>
+            <id>Add Document Libarary Actions (Send-as-Email, Call WS, Show Msg, Go to Google)</id>
+            <version>1.0</version>
+            <auto-deploy>true</auto-deploy>
+            <configurations>
+				<config evaluator="string-compare" condition="DocLibActions">
+					<actions>
+						<action id="send-to-sentiment-analysis-service" icon="send-to-sentiment-analysis-service" type="javascript" 
+						        label="action.send-to-sentiment-analysis-service.label">
+							<param name="function">onActionSimpleRepoAction</param>
+			                <param name="action">send-to-sentiment-analysis-service</param>
+							<param name="successMessage">action.send-to-sentiment-analysis-service.message</param>
+							<param name="failureMessage">action.send-to-sentiment-analysis-service.message</param>
+				            <permissions>
+				                <permission allow="true">Write</permission>
+				            </permissions>
+						</action>
+					</actions>
+				</config>
+            </configurations>
+        </module>
+    </modules>
+</extension> 

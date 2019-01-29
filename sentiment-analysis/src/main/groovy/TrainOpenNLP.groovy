@@ -27,7 +27,6 @@ DoccatFactory factory = new DoccatFactory()
 
 // Build the model
 ObjectStream<DocumentSample> samples = new JHUSentimentReader(folder)
-println samples
 DoccatModel model = DocumentCategorizerME.train("en", samples, params, factory)
 
 // TODO Save

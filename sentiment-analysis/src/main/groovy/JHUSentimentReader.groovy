@@ -5,17 +5,33 @@ import opennlp.tools.util.ObjectStream
 
 public class JHUSentimentReader implements ObjectStream<DocumentSample> {
    private File folder
+   private List<File> reviews
+   private List<DocumentSample> samples
+
    public JHUSentimentReader(File folder) {
       this.folder = folder
       reset()
+      println "There are ${reviews.size()} review files to process"
    }
 
    public void reset() {
-      // TODO
+      reviews = []
+      samples = []
+      folder.eachDir { dir ->
+         dir.eachFileMatch(~/.*.review/) { file ->
+            reviews.add(file)
+         }
+      }
    }
 
    public DocumentSample read() {
-      // TODO
-      return new DocumentSample("Positive","good")
+      if (samples.size() == 0) {
+         if (reviews.size() == 0) return null
+
+         File file = reviews.removeLast()
+         println file
+         return null
+      }
+      return samples.removeLast()
    }
 }

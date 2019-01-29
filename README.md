@@ -22,7 +22,11 @@ Change into the sentiment-analysis folder and perform the following:
 ### Building The Application ###
 ```mvn clean install```
 ### Running The Application ###
-```java -jar target/sentiment-analysis-1.0.0.ja```
+```java -jar target/sentiment-analysis-1.0.0.jar```
+## Docker Build ##
+```docker build -t SentimentAnalysis .```
+## Running with Docker ##
+```docker run SentimentAnalysis```
 
 ## REST API ##
 

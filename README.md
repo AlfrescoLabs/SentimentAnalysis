@@ -18,3 +18,26 @@ the accuracy of the prediction.
 * Integrate with APS to perform a process based on the Sentiment result.
 
 ## REST API ##
+
+**Get Sentiment Analysis ranking by sentence**
+
+Request
+
+```bash
+$ curl -X POST \
+  http://localhost:8080/analyze/text \
+  -H 'Content-Type: text/plain' \
+  -d Text coming from Alfresco Content
+```
+
+Response
+
+```json
+{
+    "ranking": {
+        "positive": 3,
+        "negative": 4,
+        "neutral": 3
+    }
+}
+```

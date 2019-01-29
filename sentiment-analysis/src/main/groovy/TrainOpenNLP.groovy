@@ -18,6 +18,11 @@ if (! folder.exists()) {
 }
 println "Building training data from ${folder}"
 
+// Where to save to
+File output = new File("sentiment.model")
+if (args.length > 1) output = new File(args[1])
+
+
 // Setup our parameters
 TrainingParameters params = new TrainingParameters()
 params.put(TrainingParameters.CUTOFF_PARAM, 2)
@@ -29,4 +34,19 @@ DoccatFactory factory = new DoccatFactory()
 ObjectStream<DocumentSample> samples = new JHUSentimentReader(folder)
 DoccatModel model = DocumentCategorizerME.train("en", samples, params, factory)
 
-// TODO Save
+
+// Test it
+println "\nTrying..."
+
+double[] outcomes
+DocumentCategorizerME myCategorizer = new DocumentCategorizerME(model)
+
+outcomes = myCategorizer.categorize("I love this book, it's the best")
+println "Good -> ${myCategorizer.getBestCategory(outcomes)}"
+outcomes = myCategorizer.categorize("This is terrible, don't buy")
+println "Bad -> ${myCategorizer.getBestCategory(outcomes)}"
+
+
+// Save
+output.withOutputStream { os -> model.serialize(os) }
+println "Model written to ${output}"

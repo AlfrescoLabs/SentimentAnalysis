@@ -34,8 +34,19 @@ public class JHUSentimentReader implements ObjectStream<DocumentSample> {
          File file = reviews.remove(reviews.size()-1)
          String sentiment = file.getName().startsWith("pos") ? 
                             POSITIVE : NEGATIVE
-println "${sentiment} ${file}"
+//println "${file.getName()} -> ${sentiment}"
          file.eachLine { line ->
+            def tokens = []
+            line.split().each { token ->
+               if (token.startsWith("#")) return
+               int split = token.indexOf(":")
+               String text = token.substring(0, split).tr("_"," ")
+               int count = token.substring(split+1) as Integer
+               text.split().each { t ->
+                  count.each { tokens.add(t) }
+               }
+            }
+            samples.add(new DocumentSample(sentiment,tokens as String[]))
          }
       }
 

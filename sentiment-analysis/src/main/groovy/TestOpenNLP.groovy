@@ -5,7 +5,7 @@ import opennlp.tools.doccat.DoccatModel
 import opennlp.tools.doccat.DocumentCategorizerME
 
 // Which model to use?
-File modelFile = new File("sentiment.model")
+File modelFile = new File("opennlp-sentiments.model")
 if (args.length > 0) modelFile = new File(args[0])
 if (! modelFile.exists()) {
    println "Error - model not found in ${modelFile}"

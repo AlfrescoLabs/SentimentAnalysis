@@ -3,7 +3,8 @@ package org.alfresco.ml.sentimentanalysis.model;
 /**
  * Created by cleseach on 29/01/2019.
  */
-public class Ranking {
+public class Ranking 
+{
     // Number of positive sentences
     int positive;
 
@@ -47,11 +48,11 @@ public class Ranking {
     }
     
     public void increasePositive() {
-    	positive++;
+        positive++;
     }
     
     public void increaseNegative() {
-    	negative++;
+        negative++;
     }
     
     public void increaseNeutral() {

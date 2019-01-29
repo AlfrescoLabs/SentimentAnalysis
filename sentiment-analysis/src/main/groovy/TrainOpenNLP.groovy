@@ -15,6 +15,7 @@ if (! folder.exists()) {
    println "Error - training data not found in ${folder}"
    println "Please download and unpack"
    println "  http://www.cs.jhu.edu/~mdredze/datasets/sentiment/processed_acl.tar.gz"
+   return
 }
 println "Building training data from ${folder}"
 
@@ -43,7 +44,7 @@ DocumentCategorizerME myCategorizer = new DocumentCategorizerME(model)
 
 outcomes = myCategorizer.categorize("I love this book, it's the best")
 println "Good -> ${myCategorizer.getBestCategory(outcomes)}"
-outcomes = myCategorizer.categorize("This is terrible, don't buy")
+outcomes = myCategorizer.categorize("This is horrible, it is a waste")
 println "Bad -> ${myCategorizer.getBestCategory(outcomes)}"
 
 

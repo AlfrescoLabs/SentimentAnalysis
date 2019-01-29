@@ -8,7 +8,7 @@ public class JHUSentimentReader implements ObjectStream<DocumentSample> {
    public static final String NEGATIVE = "Negative"
 
    private File folder
-   private List<File> reviews
+   private List<Tuple2> reviews
    private List<DocumentSample> samples
 
    public JHUSentimentReader(File folder) {
@@ -22,7 +22,10 @@ public class JHUSentimentReader implements ObjectStream<DocumentSample> {
       samples = []
       folder.eachDir { dir ->
          dir.eachFileMatch(~/.*.review/) { file ->
-            reviews.add(file)
+            if (file.getName().startsWith("posi"))
+               reviews.add([file,POSITIVE] as Tuple2)
+            if (file.getName().startsWith("nega"))
+               reviews.add([file,NEGATIVE] as Tuple2)
          }
       }
    }
@@ -31,10 +34,9 @@ public class JHUSentimentReader implements ObjectStream<DocumentSample> {
       if (samples.size() == 0) {
          if (reviews.size() == 0) return null
 
-         File file = reviews.remove(reviews.size()-1)
-         String sentiment = file.getName().startsWith("pos") ? 
-                            POSITIVE : NEGATIVE
-//println "${file.getName()} -> ${sentiment}"
+         Tuple details = reviews.remove(reviews.size()-1)
+         File file = details[0]
+         String sentiment = details[1]
          file.eachLine { line ->
             def tokens = []
             line.split().each { token ->

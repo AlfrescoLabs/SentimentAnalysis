@@ -17,6 +17,18 @@ the accuracy of the prediction.
 * Integrate the service into Alfresco, create a rule that invokes the Sentiment Analysis API.
 * Integrate with APS to perform a process based on the Sentiment result.
 
+## Setup ##
+Change into the sentiment-analysis folder and perform the following:
+### Building The Application ###
+```mvn clean install```
+### Running The Application ###
+```java -jar target/sentiment-analysis-1.0.0.jar```
+To view the page: http://localhost:8080/
+### Docker Build ###
+```docker build -t SentimentAnalysis .```
+### Running with Docker ###
+```docker run SentimentAnalysis```
+To view the page: http://localhost:8080/
 ## REST API ##
 
 **Get Sentiment Analysis ranking by sentence**

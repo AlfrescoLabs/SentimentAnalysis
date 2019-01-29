@@ -29,7 +29,7 @@ public class OpenNLPAnalyzer implements SentimentAnalyzer
     {
         // Split on whitespace or some punctuation
         // TODO Use an OpenNLP tokenizer to do this for us
-        String[] tokens = line.split("[\\w\\.,]");
+        String[] tokens = line.split("[\\s\\.,]+");
 
         // Categorise
         double[] outcomes = categorizer.categorize(tokens);

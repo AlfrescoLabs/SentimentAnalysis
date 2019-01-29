@@ -5,10 +5,10 @@ import org.alfresco.ml.sentimentanalysis.SentimentAnalyzer;
 public class OpenNLPAnalyzer implements SentimentAnalyzer
 {
 
-    public String analyze(String line)
+    @Override
+    public ANALYSYS_OUTCOME analyzeLine(String line)
     {
-
-        return "";
+        return null;
     }
 
 }

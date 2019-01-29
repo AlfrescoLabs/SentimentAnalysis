@@ -1,44 +1,68 @@
 package org.alfresco.ml.sentimentanalysis;
 
-import java.util.Properties;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
-import edu.stanford.nlp.util.CoreMap;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
-public class SentimentAnalyzer {
+public interface SentimentAnalyzer
+{
 
+    public Logger logger = Logger.getLogger(SentimentAnalyzer.class);
 
-    StanfordCoreNLP tokenizer;
-    StanfordCoreNLP pipeline;
- 
-    public SentimentAnalyzer() {
-        Properties pipelineProps = new Properties();
-        Properties tokenizerProps = new Properties();
-        pipelineProps.setProperty("annotators", "parse, sentiment");
-        pipelineProps.setProperty("parse.binaryTrees", "true");
-        pipelineProps.setProperty("enforceRequirements", "false");
-        tokenizerProps.setProperty("annotators", "tokenize ssplit");
-        tokenizer = new StanfordCoreNLP(tokenizerProps);
-        pipeline = new StanfordCoreNLP(pipelineProps);
+    public enum ANALYSYS_OUTCOME
+    {
+        POSITIVE, NEUTRAL, NEGATIVE
     }
- 
-    public String analyze(String line) {
-        Annotation annotation = tokenizer.process(line);
-        pipeline.annotate(annotation);
-        String output = "";
-        for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class)) {
-            output += sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-            output += "\n";
+
+    public ANALYSYS_OUTCOME analyzeLine(String line);
+
+    default public Map<ANALYSYS_OUTCOME, Integer> analyzeBySentences(String text)
+    {
+        List<String> sentences = splitTextBySentences(text);
+        Map<ANALYSYS_OUTCOME, Integer> result = new HashMap<>();
+        result.put(ANALYSYS_OUTCOME.POSITIVE, 0);
+        result.put(ANALYSYS_OUTCOME.NEGATIVE, 0);
+        result.put(ANALYSYS_OUTCOME.NEUTRAL, 0);
+
+        if (sentences == null || sentences.isEmpty())
+        {
+            return null;
         }
-        return output;
+
+        for (String line : sentences)
+        {
+            ANALYSYS_OUTCOME outcome = analyzeLine(line);
+            logger.debug("Sentence: " + line + " outcome: " + outcome.toString());
+            result.put(outcome, result.get(outcome) + 1);
+        }
+
+        return result;
     }
-    
-    public static void main(String... args) throws Exception {
-    	    SentimentAnalyzer sa = new SentimentAnalyzer();
-    	    System.out.println(sa.analyze("You have no idea about nothing, you're stupid!"));
+
+    default public List<String> splitTextBySentences(String text)
+    {
+        List<String> result = new ArrayList<String>();
+        if (StringUtils.isBlank(text))
+        {
+            return result;
+        }
+
+        result.addAll(Arrays.asList(StringUtils.split(text, "!|\\.|\\?")));
+
+        List<String> stringsToRemove = new ArrayList<String>();
+        for (String s : result)
+        {
+            if (StringUtils.isBlank(s))
+            {
+                stringsToRemove.add(s);
+            }
+        }
+        result.removeAll(stringsToRemove);
+        return result;
     }
-    
 }

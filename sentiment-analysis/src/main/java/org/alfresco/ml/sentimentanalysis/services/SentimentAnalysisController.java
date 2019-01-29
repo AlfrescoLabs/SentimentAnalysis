@@ -12,31 +12,34 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
 
-
 @RestController
 @RequestMapping("/analyze")
-public class SentimentAnalysisController {
+public class SentimentAnalysisController
+{
 
     @GetMapping(value = "/{text}", produces = "application/json")
-    public SentimentServiceResponse analyze(@PathVariable String text) {
+    public SentimentServiceResponse analyze(@PathVariable String text)
+    {
         SentimentAnalyzer sa = new StanfordAnalyzer();
-        sa.analyze(text);
+        sa.analyzeBySentences(text);
         // TODO Process results
         Ranking ranking = new Ranking(3, 4, 3);
         return new SentimentServiceResponse(ranking);
     }
 
     @PostMapping(value = "/text", produces = "application/json")
-    public SentimentServiceResponse analyzeText(@RequestBody String text) {
+    public SentimentServiceResponse analyzeText(@RequestBody String text)
+    {
         SentimentAnalyzer sa = new StanfordAnalyzer();
-        sa.analyze(text);
+        sa.analyzeBySentences(text);
         // TODO Process results
         Ranking ranking = new Ranking(3, 4, 3);
         return new SentimentServiceResponse(ranking);
     }
 
     @PostMapping(value = "/binary", produces = "application/json")
-    public SentimentServiceResponse acceptData(InputStream dataStream) {
+    public SentimentServiceResponse acceptData(InputStream dataStream)
+    {
         // TODO Call Service
         Ranking ranking = new Ranking(3, 4, 3);
         return new SentimentServiceResponse(ranking);

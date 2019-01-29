@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.alfresco.ml.sentimentanalysis.model.Ranking;
+import org.alfresco.ml.sentimentanalysis.model.Ranking.ANALYSIS_OUTCOME;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -14,20 +16,12 @@ public interface SentimentAnalyzer
 
     public Logger logger = Logger.getLogger(SentimentAnalyzer.class);
 
-    public enum ANALYSYS_OUTCOME
-    {
-        POSITIVE, NEUTRAL, NEGATIVE
-    }
+    public ANALYSIS_OUTCOME analyzeLine(String line);
 
-    public ANALYSYS_OUTCOME analyzeLine(String line);
-
-    default public Map<ANALYSYS_OUTCOME, Integer> analyzeBySentences(String text)
+    default public Ranking analyzeBySentences(String text)
     {
         List<String> sentences = splitTextBySentences(text);
-        Map<ANALYSYS_OUTCOME, Integer> result = new HashMap<>();
-        result.put(ANALYSYS_OUTCOME.POSITIVE, 0);
-        result.put(ANALYSYS_OUTCOME.NEGATIVE, 0);
-        result.put(ANALYSYS_OUTCOME.NEUTRAL, 0);
+        Ranking result = new Ranking();
 
         if (sentences == null || sentences.isEmpty())
         {
@@ -36,9 +30,9 @@ public interface SentimentAnalyzer
 
         for (String line : sentences)
         {
-            ANALYSYS_OUTCOME outcome = analyzeLine(line);
+            ANALYSIS_OUTCOME outcome = analyzeLine(line);
             logger.debug("Sentence: " + line + " outcome: " + outcome.toString());
-            result.put(outcome, result.get(outcome) + 1);
+            result.increaseOutcome(outcome);
         }
 
         return result;

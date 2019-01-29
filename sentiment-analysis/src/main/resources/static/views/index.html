@@ -13,27 +13,18 @@
             <div>
                 <form id="analyze">
                     <select id="library">
-                        <option value="V1">Stanford NLP</option>
-                        <option value="V2">Open NLP</option>
+                        <option value="v1">Stanford NLP</option>
+                        <option value="v2">Open NLP</option>
                     </select>
                     <input type="text" id="text" placeholder="Text to analyze..." />
                 </form>
             </div>
             <div>
-            <div class="results" id="results">
-                <div id="positive">
-                    <img src="images/bee-positive.svg">
-                    <span id="positiverank" class="rank">3</span>
+                <div class="results" id="results">
+                    <object id="positivebee" data="images/bee-positive.svg" type="image/svg+xml"></object>
+                    <object id="neutralbee" data="images/bee-neutral.svg" type="image/svg+xml"></object>
+                    <object id="negativebee" data="images/bee-negative.svg" type="image/svg+xml"></object>
                 </div>
-                <div id="neutral">
-                    <img src="images/bee-neutral.svg">
-                    <span id="neutralrank" class="rank">4</span>
-                </div>
-                <div id="negative">
-                    <img src="images/bee-negative.svg">
-                    <span id="negativerank" class="rank">3</span>
-                </div>
-            </div>
             </div>
         </div>
 

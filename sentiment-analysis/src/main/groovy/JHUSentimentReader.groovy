@@ -4,11 +4,8 @@ import opennlp.tools.doccat.DocumentSample
 import opennlp.tools.util.ObjectStream
 
 public class JHUSentimentReader implements ObjectStream<DocumentSample> {
-   public static final String POSITIVE = "Positive"
-   public static final String NEGATIVE = "Negative"
-
    private File folder
-   private List<Tuple2> reviews
+   private List<File> reviews
    private List<DocumentSample> samples
 
    public JHUSentimentReader(File folder) {
@@ -22,10 +19,7 @@ public class JHUSentimentReader implements ObjectStream<DocumentSample> {
       samples = []
       folder.eachDir { dir ->
          dir.eachFileMatch(~/.*.review/) { file ->
-            if (file.getName().startsWith("posi"))
-               reviews.add([file,POSITIVE] as Tuple2)
-            if (file.getName().startsWith("nega"))
-               reviews.add([file,NEGATIVE] as Tuple2)
+            reviews.add(file)
          }
       }
    }
@@ -34,15 +28,18 @@ public class JHUSentimentReader implements ObjectStream<DocumentSample> {
       if (samples.size() == 0) {
          if (reviews.size() == 0) return null
 
-         Tuple details = reviews.remove(reviews.size()-1)
-         File file = details[0]
-         String sentiment = details[1]
+         File file = reviews.remove(reviews.size()-1)
          file.eachLine { line ->
             def tokens = []
+            String sentiment = null
             line.split().each { token ->
-               if (token.startsWith("#")) return
                int split = token.indexOf(":")
                String text = token.substring(0, split).tr("_"," ")
+               if (text.equals("#label#")) {
+                  sentiment = token.substring(split+1)
+                  return
+               }
+
                int count = token.substring(split+1) as Integer
                text.split().each { t ->
                   count.each { tokens.add(t) }

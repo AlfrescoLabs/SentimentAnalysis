@@ -77,9 +77,9 @@
           results.style.display='block';
         });
         XHR.addEventListener("error", function(event) {
-          alert('Oups! Quelque chose s\'est mal passé.');
+          alert('Oups! Quelque chose s\'est mal passï¿½.');
         });
-        XHR.open("POST", "/analyze/text");
+        XHR.open("POST", "/analyze/v2/text");
         XHR.send(text.value);
         results.style.display='none';
       }

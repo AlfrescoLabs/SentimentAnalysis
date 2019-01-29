@@ -17,6 +17,7 @@ public class OpenNLPAnalyzer implements SentimentAnalyzer
     // TODO How to configure our model path?
     public static final String modelPath = 
                "src/main/resources/models/opennlp-sentiments.model";
+    
     public OpenNLPAnalyzer() throws IOException 
     {
         FileInputStream input = new FileInputStream(new File(modelPath));

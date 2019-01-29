@@ -2,9 +2,7 @@ package org.alfresco.ml.sentimentanalysis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.alfresco.ml.sentimentanalysis.model.Ranking;
 import org.alfresco.ml.sentimentanalysis.model.Ranking.ANALYSIS_OUTCOME;
@@ -17,8 +15,8 @@ public interface SentimentAnalyzer
     public Logger logger = Logger.getLogger(SentimentAnalyzer.class);
 
     public ANALYSIS_OUTCOME analyzeLine(String line);
-
-    default public Ranking analyzeBySentences(String text)
+    
+    default Ranking analyzeBySentences(String text)
     {
         List<String> sentences = splitTextBySentences(text);
         Ranking result = new Ranking();
@@ -38,7 +36,7 @@ public interface SentimentAnalyzer
         return result;
     }
 
-    default public List<String> splitTextBySentences(String text)
+    default List<String> splitTextBySentences(String text)
     {
         List<String> result = new ArrayList<String>();
         if (StringUtils.isBlank(text))

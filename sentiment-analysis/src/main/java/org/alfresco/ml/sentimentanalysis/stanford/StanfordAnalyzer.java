@@ -11,7 +11,7 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
-public class StanfordAnalyzer extends SentimentAnalyzer
+public class StanfordAnalyzer implements SentimentAnalyzer
 {
 
     StanfordCoreNLP tokenizer;
@@ -34,13 +34,9 @@ public class StanfordAnalyzer extends SentimentAnalyzer
         Annotation annotation = tokenizer.process(line);
         pipeline.annotate(annotation);
         String output = "";
-        for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
-        {
-            output += sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-            output += "\n";
-        }
+        output = annotation.get(CoreAnnotations.SentencesAnnotation.class).get(0).get(SentimentCoreAnnotations.SentimentClass.class);
 
-        System.out.println(output);
+        logger.debug(output);
 
         switch (output.trim())
         {
@@ -48,6 +44,7 @@ public class StanfordAnalyzer extends SentimentAnalyzer
                 return ANALYSYS_OUTCOME.NEGATIVE;
             case "Positive":
                 return ANALYSYS_OUTCOME.POSITIVE;
+            case "Neutral":
             case "Unsure":
             default:
                 return ANALYSYS_OUTCOME.NEUTRAL;

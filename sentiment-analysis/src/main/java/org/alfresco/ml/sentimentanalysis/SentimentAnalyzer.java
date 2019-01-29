@@ -7,18 +7,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
-public abstract class SentimentAnalyzer
+public interface SentimentAnalyzer
 {
+
+    public Logger logger = Logger.getLogger(SentimentAnalyzer.class);
 
     public enum ANALYSYS_OUTCOME
     {
         POSITIVE, NEUTRAL, NEGATIVE
     }
 
-    protected abstract ANALYSYS_OUTCOME analyzeLine(String line);
+    public ANALYSYS_OUTCOME analyzeLine(String line);
 
-    public Map<ANALYSYS_OUTCOME, Integer> analyzeBySentences(String text)
+    default public Map<ANALYSYS_OUTCOME, Integer> analyzeBySentences(String text)
     {
         List<String> sentences = splitTextBySentences(text);
         Map<ANALYSYS_OUTCOME, Integer> result = new HashMap<>();
@@ -34,14 +37,14 @@ public abstract class SentimentAnalyzer
         for (String line : sentences)
         {
             ANALYSYS_OUTCOME outcome = analyzeLine(line);
-            System.out.println("Sentence: " + line + " outcome: " + outcome.toString());
+            logger.debug("Sentence: " + line + " outcome: " + outcome.toString());
             result.put(outcome, result.get(outcome) + 1);
         }
 
         return result;
     }
 
-    protected List<String> splitTextBySentences(String text)
+    default public List<String> splitTextBySentences(String text)
     {
         List<String> result = new ArrayList<String>();
         if (StringUtils.isBlank(text))
@@ -49,7 +52,7 @@ public abstract class SentimentAnalyzer
             return result;
         }
 
-        result.addAll(Arrays.asList(StringUtils.split(text, ".")));
+        result.addAll(Arrays.asList(StringUtils.split(text, "!|\\.|\\?")));
 
         List<String> stringsToRemove = new ArrayList<String>();
         for (String s : result)

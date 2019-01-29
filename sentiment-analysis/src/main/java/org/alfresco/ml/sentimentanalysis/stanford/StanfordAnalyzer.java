@@ -8,7 +8,6 @@ import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
-import edu.stanford.nlp.util.CoreMap;
 
 public class StanfordAnalyzer implements SentimentAnalyzer
 {
@@ -28,16 +27,26 @@ public class StanfordAnalyzer implements SentimentAnalyzer
         pipeline = new StanfordCoreNLP(pipelineProps);
     }
 
-    public String analyze(String line)
+    public ANALYSYS_OUTCOME analyzeLine(String line)
     {
         Annotation annotation = tokenizer.process(line);
         pipeline.annotate(annotation);
         String output = "";
-        for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
+        output = annotation.get(CoreAnnotations.SentencesAnnotation.class).get(0).get(SentimentCoreAnnotations.SentimentClass.class);
+
+        logger.debug(output);
+
+        switch (output.trim())
         {
-            output += sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-            output += "\n";
+            case "Negative":
+                return ANALYSYS_OUTCOME.NEGATIVE;
+            case "Positive":
+                return ANALYSYS_OUTCOME.POSITIVE;
+            case "Neutral":
+            case "Unsure":
+            default:
+                return ANALYSYS_OUTCOME.NEUTRAL;
+
         }
-        return output;
     }
 }

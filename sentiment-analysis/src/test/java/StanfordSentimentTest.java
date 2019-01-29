@@ -1,34 +1,32 @@
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.alfresco.ml.sentimentanalysis.SentimentAnalyzer;
+import org.alfresco.ml.sentimentanalysis.SentimentAnalyzer.ANALYSYS_OUTCOME;
 import org.alfresco.ml.sentimentanalysis.stanford.StanfordAnalyzer;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import junitparams.FileParameters;
-import junitparams.JUnitParamsRunner;
 
-@RunWith(JUnitParamsRunner.class)
-public class StanfordSentimentTest {
-	SentimentAnalyzer a = new StanfordAnalyzer();
-	String[] outputs = new String[] {"Negative", "Neutral", "Positive"};
+public class StanfordSentimentTest
+{
+    SentimentAnalyzer a = new StanfordAnalyzer();
+    ANALYSYS_OUTCOME[] outputs = new ANALYSYS_OUTCOME[] { 
+            ANALYSYS_OUTCOME.NEGATIVE, 
+            ANALYSYS_OUTCOME.NEUTRAL, 
+            ANALYSYS_OUTCOME.POSITIVE };
 
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	@Test
-	@FileParameters("src/test/resources/testdata.csv")
-	public void test(int sentiment, String data) {
-		String result = a.analyze(data);
-		String expectedResult = outputs[sentiment];
-		assertTrue(result.contains(expectedResult));
-	}
-
+    @Test
+    public void testPositive()
+    {
+        assertEquals(ANALYSYS_OUTCOME.POSITIVE,a.analyzeLine("I love hackathons"));
+    }
+    @Test
+    public void testNegative()
+    {
+        assertEquals(ANALYSYS_OUTCOME.NEGATIVE, a.analyzeLine("I hate hackathons"));
+    }
+    @Test
+    public void testNeutral()
+    {
+        assertEquals(ANALYSYS_OUTCOME.NEUTRAL, a.analyzeLine("its a hackathon"));
+    }
 }

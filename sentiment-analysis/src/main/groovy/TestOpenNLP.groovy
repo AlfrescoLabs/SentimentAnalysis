@@ -18,11 +18,15 @@ modelFile.withInputStream { is -> model = new DoccatModel(is) }
 
 // Test it
 println "\nTrying..."
+def tests = [
+  ["Positive","I love this book, it's the best"],
+  ["Negative","This is horrible, it is a waste"]
+]
 
-double[] outcomes
 DocumentCategorizerME myCategorizer = new DocumentCategorizerME(model)
-
-outcomes = myCategorizer.categorize("I love this book, it's the best")
-println "Good -> ${myCategorizer.getBestCategory(outcomes)}"
-outcomes = myCategorizer.categorize("This is horrible, it is a waste")
-println "Bad -> ${myCategorizer.getBestCategory(outcomes)}"
+tests.each { test ->
+   def tokens = test[1].split()
+   def outcomes = myCategorizer.scoreMap(tokens)
+   def best = myCategorizer.getBestCategory(myCategorizer.categorize(tokens))
+   println "${test[0]} -> ${outcomes} = ${best}"
+}

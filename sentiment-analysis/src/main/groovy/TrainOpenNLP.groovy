@@ -36,18 +36,6 @@ ObjectStream<DocumentSample> samples = new JHUSentimentReader(folder)
 DoccatModel model = DocumentCategorizerME.train("en", samples, params, factory)
 
 
-// Test it
-println "\nTrying..."
-
-double[] outcomes
-DocumentCategorizerME myCategorizer = new DocumentCategorizerME(model)
-
-outcomes = myCategorizer.categorize("I love this book, it's the best")
-println "Good -> ${myCategorizer.getBestCategory(outcomes)}"
-outcomes = myCategorizer.categorize("This is horrible, it is a waste")
-println "Bad -> ${myCategorizer.getBestCategory(outcomes)}"
-
-
 // Save
 output.withOutputStream { os -> model.serialize(os) }
 println "Model written to ${output}"

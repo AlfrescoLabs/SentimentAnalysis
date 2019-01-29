@@ -20,7 +20,7 @@ if (! folder.exists()) {
 println "Building training data from ${folder}"
 
 // Where to save to
-File output = new File("sentiment.model")
+File output = new File("opennlp-sentiments.model")
 if (args.length > 1) output = new File(args[1])
 
 

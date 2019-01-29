@@ -14,20 +14,23 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.io.InputStream;
 
-
 @RestController
 @RequestMapping("/analyze")
-public class SentimentAnalysisController {
+public class SentimentAnalysisController
+{
 
     @GetMapping(value = "/{text}", produces = "application/json")
-    public SentimentServiceResponse analyze(@PathVariable String text) {
+    public SentimentServiceResponse analyze(@PathVariable String text)
+    {
         SentimentAnalyzer sa = new StanfordAnalyzer();
         Ranking ranking = sa.analyzeBySentences(text);
+
         return new SentimentServiceResponse(ranking);
     }
 
     @PostMapping(value = "/text", produces = "application/json")
-    public SentimentServiceResponse analyzeText(@RequestBody String text) {
+    public SentimentServiceResponse analyzeText(@RequestBody String text)
+    {
         SentimentAnalyzer sa = new StanfordAnalyzer();
         Ranking ranking = sa.analyzeBySentences(text);
         return new SentimentServiceResponse(ranking);
@@ -36,7 +39,7 @@ public class SentimentAnalysisController {
     @PostMapping(value = "/binary", produces = "application/json")
     public SentimentServiceResponse acceptData(InputStream dataStream) throws IOException {
         SentimentAnalyzer sa = new StanfordAnalyzer();
-    	String text = IOUtils.toString(dataStream, "UTF-8");
+    	  String text = IOUtils.toString(dataStream, "UTF-8");
         Ranking ranking = sa.analyzeBySentences(text);
         return new SentimentServiceResponse(ranking);
     }

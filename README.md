@@ -37,7 +37,7 @@ Request
 
 ```bash
 $ curl -X POST \
-  http://localhost:8080/analyze/text \
+  http://localhost:8080/analyze/v1/text \
   -H 'Content-Type: text/plain' \
   -d Text coming from Alfresco Content
 ```

@@ -40,7 +40,7 @@ window.addEventListener("load", function () {
         XHR.addEventListener("error", function(event) {
           alert('Oups! Somehting went wrong.');
         });
-        XHR.open("POST", "/analyze/" + library.value + "/text");
+        XHR.open("POST", "/analyze/text");
         XHR.send(text.value);
         results.style.visibility='hidden';
     }
